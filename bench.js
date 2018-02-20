@@ -3,6 +3,7 @@ const levenshteinEditDistance = require('levenshtein-edit-distance');
 const fastLevenshtein = require('fast-levenshtein').get;
 const talisman = require('talisman/metrics/distance/levenshtein');
 const leven = require('leven');
+const JsLevenshtein = require('js-levenshtein');
 const levenshtein = require('./');
 
 function wordBench(fn)
@@ -41,8 +42,12 @@ suite('50 paragraphs, length max=500 min=240 avr=372.5', function() {
     }
   });
 
-  bench('js-levenshtein', function() {
+  bench('js-damerau-levenshtein', function() {
     paragraphBench(levenshtein);
+  });
+
+  bench('js-levenshtein', function() {
+    paragraphBench(JsLevenshtein);
   });
 
   bench('talisman', function() {
@@ -71,8 +76,12 @@ suite('100 sentences, length max=170 min=6 avr=57.5', function() {
     }
   });
 
-  bench('js-levenshtein', function() {
+  bench('js-damerau-levenshtein', function() {
     sentenceBench(levenshtein);
+  });
+
+  bench('js-levenshtein', function() {
+    paragraphBench(JsLevenshtein);
   });
 
   bench('talisman', function() {
@@ -101,8 +110,12 @@ suite('2000 words, length max=20 min=3 avr=9.5', function() {
     }
   });
 
-  bench('js-levenshtein', function() {
+  bench('js-damerau-levenshtein', function() {
     wordBench(levenshtein);
+  });
+
+  bench('js-levenshtein', function() {
+    paragraphBench(JsLevenshtein);
   });
 
   bench('talisman', function() {
