@@ -1,20 +1,30 @@
 import test from 'ava';
 import levenshtein from './';
 
-test(t =>
-     {
-       t.is(levenshtein('a', 'b'), 1);
-       t.is(levenshtein('ab', 'ac'), 1);
-       t.is(levenshtein('ac', 'bc'), 1);
-       t.is(levenshtein('abc', 'axc'), 1);
-       t.is(levenshtein('kitten', 'sitting'), 3);
-       t.is(levenshtein('xabxcdxxefxgx', '1ab2cd34ef5g6'), 6);
-       t.is(levenshtein('cat', 'cow'), 2);
-       t.is(levenshtein('xabxcdxxefxgx', 'abcdefg'), 6);
-       t.is(levenshtein('javawasneat', 'scalaisgreat'), 7);
-       t.is(levenshtein('example', 'samples'), 3);
-       t.is(levenshtein('sturgeon', 'urgently'), 6);
-       t.is(levenshtein('levenshtein', 'frankenstein'), 6);
-       t.is(levenshtein('distance', 'difference'), 5);
-       t.is(levenshtein('因為我是中國人所以我會說中文', '因為我是英國人所以我會說英文'), 2);
-     });
+test(t => {
+  t.is(levenshtein('abba', 'baab'), 2);
+  t.is(levenshtein('foo', 'foo'), 0);
+  t.is(levenshtein('foo', 'foob'), 1);
+  t.is(levenshtein('foo', 'fooba'), 2);
+  t.is(levenshtein('foo', 'foobar'), 3);
+  t.is(levenshtein('foo', 'foobarb'), 4);
+  t.is(levenshtein('foo', 'foobarba'), 5);
+  t.is(levenshtein('foo', 'foobarbaz'), 6);
+  t.is(levenshtein('foo', 'foo'), 0);
+  t.is(levenshtein('foo', 'bfoo'), 1);
+  t.is(levenshtein('foo', 'bafoo'), 2);
+  t.is(levenshtein('foo', 'barfoo'), 3);
+  t.is(levenshtein('foo', 'barbfoo'), 4);
+  t.is(levenshtein('foo', 'barbafoo'), 5);
+  t.is(levenshtein('foo', 'barbazfoo'), 6);
+  t.is(levenshtein('челюсно', 'челюстно'), 1);
+  t.is(levenshtein('', ''), 0);
+  t.is(levenshtein('abc', ''), 3);
+  t.is(levenshtein('bc', 'abc'), 1);
+  t.is(levenshtein('fuor', 'four'), 1);
+  t.is(levenshtein('abcd', 'acb'), 2);
+  t.is(levenshtein('cape sand recycling', 'edith ann graham'), 16);
+  t.is(levenshtein('jellyifhs', 'jellyfish'), 2);
+  t.is(levenshtein('ifhs', 'fish'), 2);
+  t.is(levenshtein('Hello, world!', 'Hello,Â world!'), 1);
+});
