@@ -1,15 +1,17 @@
 'use strict';
 module.exports = (function()
 {
-  function _min(d0, d1, d2, bx, ay)
+  function _min(d0, d1, d2, bx, ay1, ay2)
   {
     return d0 < d1 || d2 < d1
         ? d0 > d2
             ? d2 + 1
             : d0 + 1
-        : bx === ay
+        : bx === ay1
             ? d1
-            : d1 + 1;
+            : bx === ay2
+              ? d1
+              : d1++;
   }
 
   return function(a, b)
@@ -53,7 +55,8 @@ module.exports = (function()
     var d3;
     var dd;
     var dy;
-    var ay;
+    var ay1;
+    var ay2;
     var bx0;
     var bx1;
     var bx2;
@@ -72,14 +75,15 @@ module.exports = (function()
       bx2 = b.charCodeAt(offset + (d2 = x + 2));
       bx3 = b.charCodeAt(offset + (d3 = x + 3));
       dd = (x += 4);
-      for (y = 0; y < vector.length; y += 2) {
-        dy = vector[y];
-        ay = vector[y + 1];
-        d0 = _min(dy, d0, d1, bx0, ay);
-        d1 = _min(d0, d1, d2, bx1, ay);
-        d2 = _min(d1, d2, d3, bx2, ay);
-        dd = _min(d2, d3, dd, bx3, ay);
-        vector[y] = dd;
+      for (y = 4; y < vector.length; y += 2) {
+        dy = vector[y - 3];
+        ay1 = vector[y - 2];
+        ay2 = vector[y];
+        d0 = _min(dy, d0, d1, bx0, ay1, ay2);
+        d1 = _min(d0, d1, d2, bx1, ay1, ay2);
+        d2 = _min(d1, d2, d3, bx2, ay1, ay2);
+        dd = _min(d2, d3, dd, bx3, ay1, ay2);
+        vector[y - 3] = dd;
         d3 = d2;
         d2 = d1;
         d1 = d0;
@@ -95,7 +99,9 @@ module.exports = (function()
             ? dy > dd ? dd + 1 : dy + 1
             : bx0 === vector[y + 1]
                 ? d0
-                : d0 + 1;
+                : bx0 === vector[y + 3]
+                  ? d0
+                  : d0 + 1;
         d0 = dy;
       }
     }
